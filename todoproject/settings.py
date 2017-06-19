@@ -118,3 +118,75 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+################### LOGGING ######################
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': 'DATETIME \t: [%(asctime)s] \nLEVEL \t: %(levelname)s \nFUNCTION \t:  %(name)s.%(funcName)s:%(lineno)s \nMESSAGE \t:  %(message)s \n'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+
+    'handlers': {
+        'log_db': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'C:\\work\\todoproject\\dblog.txt',
+            'formatter' : 'simple',
+        },
+        'log_server': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'C:\\work\\todoproject\\serverlog.txt',
+            'formatter' : 'simple',
+        },
+        'log_all': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'C:\\work\\todoproject\\serverlog.txt',
+            'formatter' : 'simple',
+        },
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter' : 'simple',
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['log_all','console', 'mail_admins'],
+            'level': 'DEBUG',
+        },
+        'django.db': {
+            'handlers': ['log_db'],
+            'level': 'DEBUG',
+            'propagate' : True,
+        },
+        'django.server': {
+            'handlers': ['log_server','django.server'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    }
+}

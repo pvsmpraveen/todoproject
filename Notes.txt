@@ -1,2 +1,3 @@
 Commands : 
 django-admin startproject todoproject
+django-admin startapp todoapp
