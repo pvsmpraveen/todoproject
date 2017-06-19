@@ -4,3 +4,6 @@ django-admin startapp todoapp
 settings.py : add logging
 settings.py : add todoapp in  INSTALLED_APPS
 settings.py : change database engine
+create models
+migrate
+create superuser
