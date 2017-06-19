@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'todoapp.apps.TodoappConfig',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,13 @@ WSGI_APPLICATION = 'todoproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': "tododb",
+        "USER":  'root',
+        'PASSWORD': 'praveen',
+        'OPTIONS': {
+            'autocommit': True,
+        },
     }
 }
 
@@ -125,7 +131,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'simple': {
-            'format': 'DATETIME \t: [%(asctime)s] \nLEVEL \t: %(levelname)s \nFUNCTION \t:  %(name)s.%(funcName)s:%(lineno)s \nMESSAGE \t:  %(message)s \n'
+            'format': 'DATETIME \t: [%(asctime)s] \nLEVEL \t\t: %(levelname)s \nFUNCTION \t:  %(name)s.%(funcName)s:%(lineno)s \nMESSAGE \t:  %(message)s \n'
         },
     },
     'filters': {
