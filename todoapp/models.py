@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class Todolist(models.Model):
     name = models.CharField(max_length=128)
     creation_date = models.DateField()
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
     def __unicode__(self):
         return ",".join([str(self.name),str(self.creation_date)])

@@ -7,3 +7,4 @@ from django.apps import AppConfig
 class TodoappConfig(AppConfig):
     name = 'todoapp'
     verbose = 'Todo Application'
+

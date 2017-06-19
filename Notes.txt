@@ -7,3 +7,5 @@ settings.py : change database engine
 create models
 migrate
 create superuser
+add debug_toolbar
+admin.py : add models
