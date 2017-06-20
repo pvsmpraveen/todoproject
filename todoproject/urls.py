@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-import settings
+from django.conf import settings
+import todoapp.urls as todo_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^todoapp/',include(todo_urls)),
 ]
 
 if settings.DEBUG:

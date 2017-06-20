@@ -9,3 +9,6 @@ migrate
 create superuser
 add debug_toolbar
 admin.py : add models
+create users, load data
+make a scratch file, test it
+add things in settings.

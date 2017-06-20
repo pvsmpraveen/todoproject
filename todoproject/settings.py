@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'todoapp.apps.TodoappConfig',
     'debug_toolbar',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -204,3 +205,13 @@ INTERNAL_IPS = ('127.0.0.1')
 # added 'debug_toolbar.middleware.DebugToolbarMiddleware', on top of all middlewarese
 # added 'debug_toolbar', in INSTALLED_APPS
 # added urls
+
+
+###################### REST_FRAMEWORK ######################
+#added  'rest_framework' to INSTALLED APPS
+
+###################### REST_FRAMEWORK_JWT ##################
+
+
+
+
