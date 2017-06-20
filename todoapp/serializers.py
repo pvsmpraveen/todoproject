@@ -10,6 +10,6 @@ class TodolistSerializer(serializers.ModelSerializer):
 class TodoitemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todoitem
-        fields = ('id','description','completed','due_by')
+        fields = ('id','description','completed','due_by','todolist')
 
 
