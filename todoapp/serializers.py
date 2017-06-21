@@ -2,9 +2,10 @@ from rest_framework import serializers
 from .models import *
 
 class TodolistSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(many=False)
     class Meta:
         model = Todolist
-        fields = ('id','name','creation_date','user')
+        fields = ('id','user','name','creation_date')
 
 
 class TodoitemSerializer(serializers.ModelSerializer):
@@ -12,4 +13,10 @@ class TodoitemSerializer(serializers.ModelSerializer):
         model = Todoitem
         fields = ('id','description','completed','due_by','todolist')
 
+class PrettyListSerializer(serializers.ModelSerializer):
+    items = serializers.StringRelatedField(many=True)
+    user = serializers.StringRelatedField(many=False)
+    class Meta:
+        model = Todolist
+        fields = ('id','user','name','creation_date','items')
 

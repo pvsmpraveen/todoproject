@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class Todolist(models.Model):
     name = models.CharField(max_length=128)
     creation_date = models.DateField()
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name='user',on_delete=models.CASCADE)
 
     def __unicode__(self):
         return ",".join([str(self.name),str(self.creation_date)])
@@ -18,6 +18,6 @@ class Todoitem(models.Model):
     completed = models.BooleanField()
     due_by = models.DateField()
 
-    todolist = models.ForeignKey(Todolist, on_delete=models.CASCADE)
+    todolist = models.ForeignKey(Todolist,related_name='items',on_delete=models.CASCADE)
     def __unicode__(self):
-        return ",".join([str(self.description), str(self.completed),str(self.due_by)])
+        return ",".join([str(self.id),str(self.description), str(self.completed),str(self.due_by)])

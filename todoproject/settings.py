@@ -58,7 +58,10 @@ ROOT_URLCONF = 'todoproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':
+        [
+            'todoapp/templates/',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -257,3 +260,11 @@ JWT_AUTH = {
 
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
+
+
+###########################################################3
+CORS_ORIGIN_WHITELIST = (
+    'http://127.0.0.1:8080/',
+    'http://127.0.0.1:8888/'
+)
+CORS_ORIGIN_ALLOW_ALL = True

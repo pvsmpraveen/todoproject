@@ -15,11 +15,15 @@ from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import *
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.authentication import BasicAuthentication
 
+def indexpage(request):
+    return render(request, "todoapp/index.html")
+
+##################### REST API #######################################
 class CSRFExemptMixin(object):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -186,3 +190,14 @@ class items_todolist_detail(CSRFExemptMixin, APIView):
         snippet = self.get_object(itemid)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+########################### PRETTY LIST SERIALIZER #######################3
+class prettylists(CSRFExemptMixin,APIView):
+    authentication_classes = []
+    permission_classes =  []
+    def get(self,request,format=None):
+        snippets = Todolist.objects.all()
+        serializer = PrettyListSerializer(snippets, many=True)
+        return Response(serializer.data)
