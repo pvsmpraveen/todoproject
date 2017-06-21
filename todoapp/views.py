@@ -36,16 +36,14 @@ class todolists(CSRFExemptMixin,APIView):
     permission_classes =  [IsAuthenticated]
 
     def get(self,request,format=None):
-        #User specific lists
         snippets = Todolist.objects.filter(user=User.objects.get(username=request.user))
         serializer = TodolistSerializer(snippets, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        request.data["user"] = User.objects.get(username=request.user).id
         serializer = TodolistSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=User.objects.get(username=request.user))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -88,6 +86,8 @@ class todoitems(CSRFExemptMixin,APIView):
         snippets = Todoitem.objects.filter(todolist__user__username=request.user)
         serializer = TodoitemSerializer(snippets, many=True)
         return Response(serializer.data)
+
+    #No POST, implement post from list/id/item/ post!
 
 class todoitems_detail(CSRFExemptMixin,APIView):
     authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication,BasicAuthentication]
