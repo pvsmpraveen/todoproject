@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 import todoapp.urls as todo_urls
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^todoapp/',include(todo_urls)),

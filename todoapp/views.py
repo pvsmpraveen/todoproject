@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import Http404
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout, REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+from django.utils.http import is_safe_url
+from django.views.decorators.cache import never_cache
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.generic import RedirectView, FormView
 
 from .models import *
 from todoapp.serializers import *
 
 
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
@@ -19,9 +27,14 @@ from rest_framework.permissions import *
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.authentication import BasicAuthentication
+from django.template import RequestContext
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
+from django import forms
 
-def indexpage(request):
-    return render(request, "todoapp/index.html")
+@login_required(login_url="login/")
+def home(request):
+    print "here"
+    return render(request,"home.html")
 
 ##################### REST API #######################################
 class CSRFExemptMixin(object):

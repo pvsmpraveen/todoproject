@@ -60,7 +60,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS':
         [
-            'todoapp/templates/',
+            "templates",
+            'todoapp/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -263,3 +264,4 @@ JWT_AUTH = {
 
 
 ###########################################################3
+LOGIN_REDIRECT_URL = '/todoapp/'
