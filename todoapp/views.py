@@ -72,6 +72,7 @@ class todolists(CSRFExemptMixin,APIView):
     permission_classes =  [IsAuthenticated]
 
     def get(self,request,format=None):
+        print request.user
         snippets = Todolist.objects.filter(user=User.objects.get(username=request.user))
         serializer = TodolistSerializer(snippets, many=True)
         return Response(serializer.data)
@@ -129,27 +130,31 @@ class todoitems_detail(CSRFExemptMixin,APIView):
     authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication,BasicAuthentication]
     permission_classes =  [IsAuthenticated]
 
-    def get_object(self, listid,username):
+    def get_object(self, itemid,username):
         try:
-            return Todoitem.objects.filter(todolist__user__username=username).get(pk=listid)
+            return Todoitem.objects.filter(todolist__user__username=username).get(pk=itemid)
         except Exception as ex:
             raise Http404
 
-    def get(self, request, listid, format=None):
-        snippet = self.get_object(listid,request.user)
+    def get(self, request, itemid, format=None):
+        snippet = self.get_object(itemid,request.user)
         serializer = TodoitemSerializer(snippet)
         return Response(serializer.data)
 
-    def put(self, request, listid, format=None):
-        snippet = self.get_object(listid,request.user)
-        serializer = TodoitemSerializer(snippet, data=request.data)
+    def put(self, request, itemid, format=None):
+        print "here"
+        snippet = self.get_object(itemid,request.user)
+        newdata = request.data.copy()
+        newdata["todolist"] = snippet.todolist_id
+        serializer = TodoitemSerializer(snippet,data=newdata)
+        print serializer
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id, format=None):
-        snippet = self.get_object(id,request.user)
+    def delete(self, request, itemid, format=None):
+        snippet = self.get_object(itemid,request.user)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -23,7 +23,7 @@ import todoapp.urls as todo_urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^todoapp/',include(todo_urls)),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
 
 if settings.DEBUG:
     import debug_toolbar

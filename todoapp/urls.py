@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^api/lists/(?P<listid>[0-9]+)/$', todolists_detail.as_view()),     #UPDATE,DELETE,PUT,GET_LIST
 
     url(r'^api/items/$', todoitems.as_view()),
-    url(r'^api/items/(?P<listid>[0-9]+)/$', todoitems_detail.as_view()),
+    url(r'^api/items/(?P<itemid>[0-9]+)/$', todoitems_detail.as_view()),
 
     url(r'^api/lists/(?P<listid>[0-9]+)/items/$', items_todolist.as_view()),
     url(r'^api/lists/(?P<listid>[0-9]+)/items/(?P<itemid>[0-9]+)/$', items_todolist_detail.as_view()),

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+     {% load staticfiles %} 
 <head>
      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
@@ -40,6 +41,8 @@
             z-index: 1;
             will-change: width, height;
           }
+          
+          
 
      </style>
 </head>
@@ -70,33 +73,45 @@
      </header>
 
      <main>
-          <div class="container s6 m6">
+          <div class="container s5 m5">
             <h4 class="center">MyTodo</h4>
-            <ul class="collapsible" data-collapsible="expandable">
-              {% for x,res in todo %}
-              <li>
-                <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{x.name}}</div>
-                
-                  <div class="collapsible-body">
-                    <table>
-                      <thead>
-                        <th>Description</th>
-                         <th>Completed</th>
-                         <th>Due By</th>
-                      </thead>
-                      {% for y in res %}
-                        <tr>
-                          <td>{{y.description}} </td>
-                          <td>{{y.completed}} </td>
-                          <td>{{y.due_by}} </td>
-                        </tr>
-                      {% endfor %}
-                      
-                    </table>
-                  </div>
-                
-              {% endfor %}
-            </ul>
+               <div id="todo_content" class="container-fluid center">
+                      <div id = "loader" class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-blue-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div><div class="gap-patch">
+                            <div class="circle"></div>
+                          </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>  
+                    
+                    <div class="container">
+                         <ul id="todolists" class="collapsible" data-collapsible="expandable">
+                              
+                         </ul>
+                    </div>
+               </div>
+               
+                 <!-- Modal Structure -->
+                 <div id="modal1" class="modal">
+                    <form id="updform" action="">
+                        <div class="modal-content">
+                          <h4>Update Item</h4>
+                           Description : <input type="text" name="description" id="item_description" class="validate" required><br>
+                           Due By :      <input type="date" name="due_by" class="datepicker" id="item_dueby" class="validate" required><br>
+                             <p>
+                               <input type="checkbox" name="item_status" id="completed"/>
+                               <label for="completed">Red</label>
+                             </p>
+
+                        </div>
+                        <div class="modal-footer">
+                          <input id="updatebtn" class="modal-action modal-close waves-effect waves-green btn-flat" value="Submit" type="submit"> </div>
+                     </form>
+                 </div>
         </div>
           </main>
 
@@ -119,9 +134,102 @@
      
      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
-
+     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    
+     <script id="listTemplate" type="text/html">
+          <li>
+              <div class="collapsible-header">
+                   <table>
+                         <tr id=lists_${id}>
+                              <td><i class="material-icons">filter_drama</i> </td>
+                              <td>${name}</td>
+                              <td>${creation_date}</td>
+                              <td><a href="#"> <i class="material-icons">input</i> </a> </td>
+                              <td><a href="#"> <i class="material-icons">delete</i> </a> </td>
+                         </tr>
+                    </table>
+              </div>   
+               <div class="collapsible-body">
+                    <table>
+                      <thead>
+                         <th>Description</th>
+                         <th>Due By</th>
+                         <th>Completed</th>
+                         <th>Update </th>
+                         <th>Delete </th>
+                         </thead>
+                         
+                           {% verbatim %}
+                             {{each(id,description,due_by,completed) items}}
+                          <tr id=items_${id} class="item">
+                               <td>${description} </td> 
+                               <td>${due_by} </td>
+                               <td>${completed} </td>
+                               <td><button id="item_${id}" class="waves-effect waves-light btn" onclick=updateFun(this)> <i class="material-icons">input</i> </button> </td>
+                              <td><a id=item_${id} class="del_item" href="javascript:;"> <i class="material-icons">delete</i> </a> </td>
+                           </tr>   
+                              {{/each}}
+                              {% endverbatim %}
+                             
+                    </table>     
+               </div>
+          </li>
+     </script>
+     
      <script type=text/javascript>
+          function updateFun(ele){
+               var id = ele.id.replace(/^item_/, '');;
+               $('#modal1').modal('open');
+               $('#updform').submit(function(event){
+                    event.preventDefault();
+                    var formdata = $(this).serializeArray();
+                    console.log(id);
+
+                    var upd_data = new Object();
+                    for(var i =0;i<formdata.length;i++){
+                         if(formdata[i].name == "item_status"){
+                              if(formdata[i].value == "on"){
+                                   upd_data["completed"] = "true";
+                              }
+                              else{
+                                   upd_data["completed"] = "false";
+                              }
+                         }
+                         else{
+                              upd_data[formdata[i].name] = formdata[i].value;
+                         }
+                         
+                    }
+                    console.log(upd_data);
+                    $.ajax({
+                         url: "http://127.0.0.1:8000/todoapp/api/items/"+id+"/", 
+                         headers: {
+                              'X-CSRFToken' : GetCookie('csrftoken')
+                         },
+                         dataType: "json",
+                         type: "PUT",
+                         data : upd_data,
+                         success: function(data){
+                              console.log("sucess");
+                         },
+                         error:function(){
+                              console.log("error");
+                         }
+                    });
+               }) 
+          }
+          
+          function GetCookie(sName){
+            var aCookie = document.cookie.split("; ");
+            for (var i=0; i < aCookie.length; i++){
+              var aCrumb = aCookie[i].split("=");
+              if (sName == aCrumb[0]) 
+                return unescape(aCrumb[1]);
+            }
+            return null;
+          }
        $(document).ready(function(){
+            
           $('.dropdown-button').dropdown({
                 inDuration: 300,
                 outDuration: 225,
@@ -130,10 +238,64 @@
                 alignment: 'right' // Displays dropdown with edge aligned to the left of button
               }
             );
+           $('.modal').modal();
+           $.ajax({
+               url: "http://127.0.0.1:8000/todoapp/api/lists/", 
+               headers: {
+                    'Content-Type': 'application/json',
+               },
+               dataType: "json",
+               type: "GET",
+               contentType: "application/json; charset=utf-8",
+               success: function(data){
+                    $('#loader').hide(); 
+                    console.log(data);
+                    $("#listTemplate").tmpl(data).appendTo('#todolists');
+               },
+               error:function(){
+                    console.log("error");
+               }
+          });
+
+          
+          $('body').on('click','.deleteitem',function(){
+             $(this).parent('li').hide();
+          });
+               
+          $('body').on('click','.deletelist',function(){
+             $(this).parent('ul').hide();
+          });
+            
+
+          
+          $('body').on('click','.edit_item',function(){
+             var id = this.id.replace(/^item_/, '');
+             var edit = "#items_"+id;
+               console.log(edit);
+          });
+
+          $('body').on('click','.del_item',function(){
+             var id = this.id.replace(/^item_/, '');
+             var hide = "#items_"+id;
+             $.ajax({
+                    url: "http://127.0.0.1:8000/todoapp/api/items/"+id+"/", 
+                    headers: {
+                         'Content-Type': 'application/json',
+                         'X-CSRFToken' : GetCookie('csrftoken')
+                    },
+                    dataType: "json",
+                    type: "DELETE",
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data){
+                         $(hide).remove(); 
+                    },
+                    error:function(){
+                         console.log("error");
+                    }
+               });
+          });
        });
      </script>
-
-     
      
 </body>
 </html>
