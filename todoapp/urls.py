@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^api/lists/(?P<listid>[0-9]+)/items/$', items_todolist.as_view()),
     url(r'^api/lists/(?P<listid>[0-9]+)/items/(?P<itemid>[0-9]+)/$', items_todolist_detail.as_view()),
 
-    url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm},name="loginn"),
+    url(r'^login/$', views.login, {'template_name': 'login.html', 'authentication_form': LoginForm,'redirect_authenticated_user':True},name="loginn"),
     url(r'^logout/$', views.logout, {'next_page': '/todoapp/login'},name="logoutt"),
+    url(r'^register/$',register_user,name="registerr"),
 ]

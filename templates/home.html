@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+     <style>
+           body {
+              display: flex;
+              min-height: 100vh;
+              flex-direction: column;
+            }
+
+            main {
+              flex: 1 0 auto;
+            }
+
+          .wrapper{
+              width: 40%;
+              padding : 20px 5px 20px 5px;
+              max-width: 11000px;
+              margin: 20px auto;
+          }
+          
+          .brand-logo{
+              font-weight:900;
+          }
+
+          .dropdown-content {
+            background-color: #FFFFFF;
+            margin: 0;
+            display: none;
+            min-width: 300px; /* Changed this to accomodate content width */
+            max-height: auto;
+              margin-left: -1px; /* Add this to keep dropdown in line with edge of navbar */
+            overflow: hidden; /* Changed this from overflow-y:auto; to overflow:hidden; */
+            opacity: 0;
+            position: absolute;
+            white-space: nowrap;
+            z-index: 1;
+            will-change: width, height;
+          }
+
+     </style>
+</head>
+
+<body>
+     <header>
+          <div>
+               <nav>
+                    <div class="nav-wrapper container">
+                          <a href="#!" class="brand-logo left">Welcome User!</a>
+                          <ul class="right hide-on-med-and-down">
+                                  <!-- Dropdown Trigger -->
+                                  <li><a class="dropdown-button" href="#!" data-activates="dropdown" data-beloworigin="true">
+                                       Settings <i class="large material-icons mdi-navigation-arrow-drop-down right">settings</i></a></li>
+                          </ul>
+                  </div>
+               </nav>
+
+               <ul id="dropdown" class="dropdown-content collection">
+                       <li>
+                            <a href="{% url 'logoutt' %} "><h5 class="black-text"> Change Password</h5></a>
+                       </li>
+                       <li>
+                            <a href="{% url 'logoutt' %} "><h5 class="black-text"> Log Out</h5></a>
+                       </li>
+               </ul>
+          </div>
+     </header>
+
+     <main>
+          <div class="container s6 m6">
+            <h4 class="center">MyTodo</h4>
+            <ul class="collapsible" data-collapsible="expandable">
+              {% for x,res in todo %}
+              <li>
+                <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{x.name}}</div>
+                
+                  <div class="collapsible-body">
+                    <table>
+                      <thead>
+                        <th>Description</th>
+                         <th>Completed</th>
+                         <th>Due By</th>
+                      </thead>
+                      {% for y in res %}
+                        <tr>
+                          <td>{{y.description}} </td>
+                          <td>{{y.completed}} </td>
+                          <td>{{y.due_by}} </td>
+                        </tr>
+                      {% endfor %}
+                      
+                    </table>
+                  </div>
+                
+              {% endfor %}
+            </ul>
+        </div>
+          </main>
+
+
+
+      <footer class="page-footer #00695c teal darken-3">
+        <div class="container ">
+          <div class="row">
+            <div class="col l12 s12">
+              <h5 class="white-text">Footer</h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+              Copyright &copy; 2017 pvsmpraveen.
+          </div>
+        </div>
+      </footer>
+     
+     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+
+     <script type=text/javascript>
+       $(document).ready(function(){
+          $('.dropdown-button').dropdown({
+                inDuration: 300,
+                outDuration: 225,
+                hover: true, // Activate on hover
+                belowOrigin: true, // Displays dropdown below the button
+                alignment: 'right' // Displays dropdown with edge aligned to the left of button
+              }
+            );
+       });
+     </script>
+
+     
+     
+</body>
+</html>

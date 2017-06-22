@@ -30,11 +30,34 @@ from rest_framework.authentication import BasicAuthentication
 from django.template import RequestContext
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 from django import forms
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.contrib import auth
+from django.template.context_processors import csrf
+from forms import MyRegistrationForm
+
 
 @login_required(login_url="login/")
 def home(request):
-    print "here"
     return render(request,"home.html")
+
+def register_user(request):
+    args = {}
+    if request.method == 'POST':
+        print request.POST
+        form = MyRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/accounts/register_success')
+        else:
+            print form.error_messages
+            print form.non_field_errors
+            args['errors'] =  form.errors
+    else:
+        form = MyRegistrationForm()
+    args['form'] = form
+    args.update(csrf(request))
+    return render(request, 'register.html',args)
 
 ##################### REST API #######################################
 class CSRFExemptMixin(object):
