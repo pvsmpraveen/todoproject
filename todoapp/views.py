@@ -39,7 +39,10 @@ from forms import MyRegistrationForm
 
 @login_required(login_url="login/")
 def home(request):
-    return render(request,"home.html")
+    request.COOKIES['username'] = request.user
+    response = render(request, "home.html")
+    response.set_cookie('username', request.user)
+    return response
 
 def register_user(request):
     args = {}
@@ -48,7 +51,7 @@ def register_user(request):
         form = MyRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/accounts/register_success')
+            return HttpResponseRedirect('/todoapp/login')
         else:
             print form.error_messages
             print form.non_field_errors
@@ -72,13 +75,12 @@ class todolists(CSRFExemptMixin,APIView):
     permission_classes =  [IsAuthenticated]
 
     def get(self,request,format=None):
-        print request.user
         snippets = Todolist.objects.filter(user=User.objects.get(username=request.user))
         serializer = TodolistSerializer(snippets, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = TodolistSerializer(data=request.data)
+        serializer = SingleTodoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=User.objects.get(username=request.user))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -102,7 +104,7 @@ class todolists_detail(CSRFExemptMixin,APIView):
 
     def put(self, request, listid, format=None):
         snippet = self.get_object(listid,request.user)
-        serializer = TodolistSerializer(snippet, data=request.data)
+        serializer = SingleTodoSerializer(snippet, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -142,7 +144,6 @@ class todoitems_detail(CSRFExemptMixin,APIView):
         return Response(serializer.data)
 
     def put(self, request, itemid, format=None):
-        print "here"
         snippet = self.get_object(itemid,request.user)
         newdata = request.data.copy()
         newdata["todolist"] = snippet.todolist_id
@@ -182,9 +183,9 @@ class items_todolist(CSRFExemptMixin,APIView):
 
     def post(self, request,listid, format=None):
         self.validate(request.user,listid)
-
-        request.data["todolist"] = listid
-        serializer = TodoitemSerializer(data=request.data)
+        newdata = request.data.copy()
+        newdata["todolist"] = listid
+        serializer = TodoitemSerializer(data=newdata)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -218,8 +219,9 @@ class items_todolist_detail(CSRFExemptMixin, APIView):
         self.validate(request.user, listid)
 
         snippet = self.get_object(itemid,request.user)
-        request.data["todolist"] = listid
-        serializer = TodoitemSerializer(snippet, data=request.data)
+        newdata = request.data.copy()
+        newdata["todolist"] = listid
+        serializer = TodoitemSerializer(snippet, data=newdata)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -42,7 +42,15 @@
             will-change: width, height;
           }
           
-          
+          .btn, .btn-large {
+              text-decoration: none;
+              color: #fff;
+              background-color:wheat;
+              text-align: center;
+              letter-spacing: .5px;
+              transition: .2s ease-out;
+              cursor: pointer;
+          }
 
      </style>
 </head>
@@ -50,11 +58,10 @@
 <body>
      <header>
           <div>
-               <nav>
-                    <div class="nav-wrapper container">
-                          <a href="#!" class="brand-logo left">Welcome User!</a>
+               <nav class="#42a5f5 blue lighten-1">
+                    <div class="container-fluid ">
+                          <a id="welcomeuser" href="#!" class="brand-logo left">Welcome !</a>
                           <ul class="right hide-on-med-and-down">
-                                  <!-- Dropdown Trigger -->
                                   <li><a class="dropdown-button" href="#!" data-activates="dropdown" data-beloworigin="true">
                                        Settings <i class="large material-icons mdi-navigation-arrow-drop-down right">settings</i></a></li>
                           </ul>
@@ -63,7 +70,7 @@
 
                <ul id="dropdown" class="dropdown-content collection">
                        <li>
-                            <a href="{% url 'logoutt' %} "><h5 class="black-text"> Change Password</h5></a>
+                            <a href="#"><h5 class="black-text"> Change Password</h5></a>
                        </li>
                        <li>
                             <a href="{% url 'logoutt' %} "><h5 class="black-text"> Log Out</h5></a>
@@ -74,8 +81,8 @@
 
      <main>
           <div class="container s5 m5">
-            <h4 class="center">MyTodo</h4>
-               <div id="todo_content" class="container-fluid center">
+            <h4 class="center">Todo Lists</h4>
+               <div id="todo_content" class="container">
                       <div id = "loader" class="preloader-wrapper big active">
                         <div class="spinner-layer spinner-blue-only">
                           <div class="circle-clipper left">
@@ -88,11 +95,16 @@
                         </div>
                       </div>  
                     
-                    <div class="container">
+                    <div id="listcontainer" class="container-fluid">
                          <ul id="todolists" class="collapsible" data-collapsible="expandable">
                               
                          </ul>
+                         <center>
+                           <button id="createForm" class="btn-floating btn-large waves-effect waves-light green" onclick=createList(this) type="submit"><i class="material-icons">add</i></button>
+                         </center> 
+                         
                     </div>
+                    <div class="section"></div>
                </div>
                
                  <!-- Modal Structure -->
@@ -104,20 +116,44 @@
                            Due By :      <input type="date" name="due_by" class="datepicker" id="item_dueby" class="validate" required><br>
                              <p>
                                <input type="checkbox" name="item_status" id="completed"/>
-                               <label for="completed">Red</label>
+                               <label for="completed">Completed</label>
                              </p>
 
                         </div>
                         <div class="modal-footer">
                           <input id="updatebtn" class="modal-action modal-close waves-effect waves-green btn-flat" value="Submit" type="submit"> </div>
                      </form>
-                 </div>
-        </div>
+                 </div>   
+               
+               <div id="modal2" class="modal">
+                    <form id="new_list" action="">
+                        <div class="modal-content">
+                          <h4>Add Todo List</h4>
+                           List Name : <input type="text" name="name" id="list_name" class="validate" required><br>
+                          <input type="date" id="theDate" name="creation_date" class="datepicker" id="item_dueby" class="validate"><br>
+                        </div>
+                        <div class="modal-footer">
+                          <input id="newlistbtn" class="modal-action modal-close waves-effect waves-green btn-flat" value="Submit" type="submit"> </div>
+                     </form>
+                 </div>  
+               
+               <div id="modal3" class="modal">
+                    <form id="update_list" action="">
+                        <div class="modal-content">
+                          <h4>Update Todo List</h4>
+                           List Name : <input type="text" name="name" id="list_name" class="validate" required><br>
+                          <input type="date" id="theDate" name="creation_date" class="datepicker" id="item_dueby" class="validate"><br>
+                        </div>
+                        <div class="modal-footer">
+                          <input id="updatelistbtn" class="modal-action modal-close waves-effect waves-green btn-flat" value="Submit" type="submit"> </div>
+                     </form>
+                 </div>  
+          </div>
           </main>
 
 
 
-      <footer class="page-footer #00695c teal darken-3">
+      <footer class="page-footer #9e9e9e grey">
         <div class="container ">
           <div class="row">
             <div class="col l12 s12">
@@ -135,91 +171,185 @@
      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
      <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-    
+     
+     
+          
+          
+     <!--    SCRIPT TEMPLATES AND FUNCTIONS         -->
+     
      <script id="listTemplate" type="text/html">
-          <li>
+          <li id="lis_${id}">
+               
               <div class="collapsible-header">
                    <table>
                          <tr id=lists_${id}>
-                              <td><i class="material-icons">filter_drama</i> </td>
-                              <td>${name}</td>
-                              <td>${creation_date}</td>
-                              <td><a href="#"> <i class="material-icons">input</i> </a> </td>
-                              <td><a href="#"> <i class="material-icons">delete</i> </a> </td>
+                              <td style="min-width: 10px; max-width: 10px; word-break:break-all;"> <i class="material-icons">today</i> </td>
+                              <td style="min-width: 40px; max-width: 50px; word-break:break-all;" id="lists_name_${id}">${name}</td>
+                              <td style="min-width: 20px; max-width: 20px; word-break:break-all;" id="lists_date_${id}">${creation_date}</td>
+                              <td style="min-width: 10px; max-width: 10px"><a id="upd_list_${id}" class="modal-trigger waves-effect waves-teal" href="#modal3">
+                                   <i class="material-icons">input</i> </a> </td>
+                              <td style="min-width: 10px; max-width: 10px"><a id="del_list_${id}" class="waves-effect waves-teal" onclick=deleteList(this)>
+                                   <i class="material-icons">delete</i></a>   
+                              </td>
                          </tr>
                     </table>
               </div>   
-               <div class="collapsible-body">
-                    <table>
+               <div class="container-fluid right col 3">
+
+              </div>
+               <div id="cbody_${id}" class="collapsible-body">
+                    <table id="table_${id}">
                       <thead>
                          <th>Description</th>
                          <th>Due By</th>
                          <th>Completed</th>
-                         <th>Update </th>
-                         <th>Delete </th>
+                         <th colspan="2"> Action </th>
                          </thead>
                          
                            {% verbatim %}
                              {{each(id,description,due_by,completed) items}}
+                         
                           <tr id=items_${id} class="item">
-                               <td>${description} </td> 
-                               <td>${due_by} </td>
-                               <td>${completed} </td>
-                               <td><button id="item_${id}" class="waves-effect waves-light btn" onclick=updateFun(this)> <i class="material-icons">input</i> </button> </td>
+                               <td id=items_desc_${id}>${description} </td> 
+                               <td id=items_due_${id}>${due_by} </td>
+                               <td id={items_compl_${id}>${completed} </td>
+                              <td><a id="upd_item_${id}" class="modal-trigger waves-effect waves-teal" href="#modal1">
+                                <i class="material-icons">input</i> </a>
                               <td><a id=item_${id} class="del_item" href="javascript:;"> <i class="material-icons">delete</i> </a> </td>
                            </tr>   
                               {{/each}}
                               {% endverbatim %}
-                             
+                         <tr>
+                              <form action="">
+                              <td><input id="new_item_${id}" type="text" placeholder="new work here" required></td>
+                              <td><input id="new_date_${id}" type="date"></td>
+                              <td>                            
+                               <input type="checkbox" name="item_status" id="new_compl_${id}">
+                               <label for="new_compl_${id}">Completed</label>
+                              </td>
+                              <td colspan="2">  <button id="butt_${id}" class="btn-floating btn-large waves-effect waves-light red" onclick=postFun(this) type="submit"><i class="material-icons">add</i></button></td>
+                              </form>     
+                         </tr>    
                     </table>     
                </div>
           </li>
      </script>
      
      <script type=text/javascript>
-          function updateFun(ele){
-               var id = ele.id.replace(/^item_/, '');;
-               $('#modal1').modal('open');
-               $('#updform').submit(function(event){
-                    event.preventDefault();
-                    var formdata = $(this).serializeArray();
-                    console.log(id);
-
-                    var upd_data = new Object();
-                    for(var i =0;i<formdata.length;i++){
-                         if(formdata[i].name == "item_status"){
-                              if(formdata[i].value == "on"){
-                                   upd_data["completed"] = "true";
-                              }
-                              else{
-                                   upd_data["completed"] = "false";
-                              }
-                         }
-                         else{
-                              upd_data[formdata[i].name] = formdata[i].value;
-                         }
-                         
-                    }
-                    console.log(upd_data);
-                    $.ajax({
-                         url: "http://127.0.0.1:8000/todoapp/api/items/"+id+"/", 
-                         headers: {
-                              'X-CSRFToken' : GetCookie('csrftoken')
-                         },
-                         dataType: "json",
-                         type: "PUT",
-                         data : upd_data,
-                         success: function(data){
-                              console.log("sucess");
-                         },
-                         error:function(){
-                              console.log("error");
-                         }
-                    });
-               }) 
+          function createList(ele){
+                $('#modal2').modal('open');
           }
           
-          function GetCookie(sName){
+          $('#new_list').submit(function(event){
+               event.preventDefault();
+               var formdata = $(this).serializeArray();
+               console.log(formdata);
+               var newlist = new Object();
+                for(var i=0;i<formdata.length;i++){
+                     newlist[formdata[i].name] = formdata[i].value;
+                }
+               $.ajax({
+                    url: "http://127.0.0.1:8000/todoapp/api/lists/", 
+                    headers: {
+                    'X-CSRFToken' : GetCookie('csrftoken')
+                    },
+                    dataType: "json",
+                    type: "POST",
+                    data : newlist,
+                    success: function(data){
+                    
+                         console.log("sucess");
+                         data["items"] = new Array();
+                         console.log(data);
+                         var makedatatmpl = new Array();
+                         makedatatmpl.push(data);
+                         $("#listTemplate").tmpl(makedatatmpl).appendTo('#todolists');
+
+                         
+                    },
+                    error:function(){
+                         console.log("error");
+                    }
+               });
+          });
+          
+          function deleteList(ele){
+               console.log(ele);
+               var listid = ele.id.replace(/^del_list_/, '')
+               $.ajax({
+                    url: "http://127.0.0.1:8000/todoapp/api/lists/"+listid+"/", 
+                    headers: {
+                         'X-CSRFToken' : GetCookie('csrftoken')
+                    },
+                    dataType: "json",
+                    type: "DELETE",
+                    success: function(data){
+                         console.log("sucess");
+                         var domid = "#lis_"+listid;
+                         console.log(domid);
+                         $(domid).remove();
+                         
+                    },
+                    error:function(){
+                         console.log("error");
+                    }
+               });
+               
+          }
+          
+          function updateFun(ele){
+               $('#modal1').modal('open');
+          }
+          
+          function postFun(ele){
+               console.log(ele);
+               var listid = ele.id.replace(/^butt_/, '')
+               var desc = $('#new_item_'+listid).val();
+               var dueby = $('#new_date_'+listid).val();
+               var compl = $('#new_compl_'+listid).prop('checked')
+               console.log(listid);
+               console.log(desc);
+               console.log(dueby);
+               console.log(compl);
+               var post_data = new Object();
+               post_data["description"] = desc;
+               post_data["due_by"] = dueby;
+               post_data["completed"] = compl;
+               
+               $.ajax({
+                    url: "http://127.0.0.1:8000/todoapp/api/lists/"+listid+"/items/", 
+                    headers: {
+                         'X-CSRFToken' : GetCookie('csrftoken')
+                    },
+                    dataType: "json",
+                    type: "POST",
+                    data : post_data,
+                    success: function(data){
+                         console.log("sucess");
+                         console.log(data);
+                         var rowBegin = ' <tr id=items_'+data["id"]+' class=\"item\">';
+                         var row1 =  ' <td id=items_desc_'+data["id"]+'>'+data["description"] +'</td>';
+                         var row2 =  ' <td id=items_due_'+data["id"]+'>'+ data["due_by"] +'</td>';
+                         var row3 =  ' <td id=items_desc_'+data["id"]+'>'+data["completed"] + '</td>';
+                         console.log(rowBegin);
+                         console.log(row1);
+                         console.log(row2);
+                         console.log(row3);
+                         var row4 = ' <td><a id=\"upd_item_'+data['id']+'\"' + ' class="modal-trigger waves-effect waves-teal" href="#modal1"> <i class="material-icons">input</i> </a> </td>';
+                         var row5 = ' <td><a id=item_'+data["id"]+' class="del_item" href="javascript:;"> <i class="material-icons">delete</i> </a> </td>';
+                         var rowEnd = ' </tr>';
+                         var html = rowBegin+row1+row2+row3+row4+row5+rowEnd;
+                         console.log(html);
+                         var domid = "#table_"+listid;
+                         $(domid).prepend(html);
+                    },
+                    error:function(){
+                         console.log("error");
+                    }
+               });
+          }
+          
+     function GetCookie(sName){
             var aCookie = document.cookie.split("; ");
             for (var i=0; i < aCookie.length; i++){
               var aCrumb = aCookie[i].split("=");
@@ -227,9 +357,12 @@
                 return unescape(aCrumb[1]);
             }
             return null;
-          }
-       $(document).ready(function(){
-            
+
+       }
+     
+     $(document).ready(function(){
+          $("#welcomeuser").text("Welcome "+GetCookie("username")+" !");
+          
           $('.dropdown-button').dropdown({
                 inDuration: 300,
                 outDuration: 225,
@@ -238,7 +371,20 @@
                 alignment: 'right' // Displays dropdown with edge aligned to the left of button
               }
             );
-           $('.modal').modal();
+             $('.modal').modal();
+            
+              var date = new Date();
+
+              var day = date.getDate();
+              var month = date.getMonth() + 1;
+              var year = date.getFullYear();
+
+              if (month < 10) month = "0" + month;
+              if (day < 10) day = "0" + day;
+
+              var today = year + "-" + month + "-" + day;       
+              $("#theDate").attr("value", today); 
+            
            $.ajax({
                url: "http://127.0.0.1:8000/todoapp/api/lists/", 
                headers: {
@@ -248,6 +394,8 @@
                type: "GET",
                contentType: "application/json; charset=utf-8",
                success: function(data){
+
+                    $("#response").html(data);
                     $('#loader').hide(); 
                     console.log(data);
                     $("#listTemplate").tmpl(data).appendTo('#todolists');
@@ -256,24 +404,7 @@
                     console.log("error");
                }
           });
-
-          
-          $('body').on('click','.deleteitem',function(){
-             $(this).parent('li').hide();
-          });
-               
-          $('body').on('click','.deletelist',function(){
-             $(this).parent('ul').hide();
-          });
             
-
-          
-          $('body').on('click','.edit_item',function(){
-             var id = this.id.replace(/^item_/, '');
-             var edit = "#items_"+id;
-               console.log(edit);
-          });
-
           $('body').on('click','.del_item',function(){
              var id = this.id.replace(/^item_/, '');
              var hide = "#items_"+id;
@@ -294,6 +425,92 @@
                     }
                });
           });
+          
+          var itemid;
+          var listid;
+          
+          $('#modal3').modal({dismissible: true, opacity: .5, inDuration: 300, outDuration: 200, startingTop: '4%', endingTop: '10%', 
+               ready: function(modal, trigger) { listid = trigger["0"].id.replace(/^upd_list_/, ''); },
+               complete: function(){ }
+          });
+          
+          $('#modal1').modal({
+               dismissible: true, opacity: .5, inDuration: 300, outDuration: 200, startingTop: '4%',endingTop: '10%',
+               ready: function(modal, trigger) { itemid = trigger["0"].id.replace(/^upd_item_/, '');  },
+               complete: function(){  }
+          });
+          
+          $('#update_list').submit(function(event){
+               event.preventDefault();
+               var formdata = $(this).serializeArray();
+               console.log(formdata);
+               var newlist = new Object();
+               for(var i=0;i<formdata.length;i++){
+                     newlist[formdata[i].name] = formdata[i].value;
+               }
+               console.log(newlist);
+                     console.log(listid);
+                     $.ajax({
+                         url: "http://127.0.0.1:8000/todoapp/api/lists/"+listid+"/", 
+                         headers: {
+                              'X-CSRFToken' : GetCookie('csrftoken')
+                              
+                         },
+                         dataType: "json",
+                         type: "PUT",
+                         data : newlist,
+                         success: function(data){
+                              console.log("sucess");
+                              $('#lists_name_'+listid).html(newlist["name"]);
+                              $('#lists_date_'+listid).html(newlist["creation_date"]);
+                              
+                         },
+                         error:function(){
+                              console.log("error");
+                         }
+               });
+          });
+          
+          $('#updform').submit(function(event){
+                    event.preventDefault();
+                    console.log(itemid);
+                    var formdata = $(this).serializeArray();
+                    var upd_data = new Object();
+                    console.log(formdata);
+                    for(var i =0;i<formdata.length;i++){
+                         if(formdata[i].name == "item_status"){
+                              if(formdata[i].value == "on"){
+                                   upd_data["completed"] = "true";
+                              }
+                              else{
+                                   upd_data["completed"] = "false";
+                              }
+                         }
+                         else{
+                              upd_data[formdata[i].name] = formdata[i].value;
+                         }
+                         
+                    }
+                    console.log(upd_data);
+                    $.ajax({
+                         url: "http://127.0.0.1:8000/todoapp/api/items/"+itemid+"/", 
+                         headers: {
+                              'X-CSRFToken' : GetCookie('csrftoken')
+                         },
+                         dataType: "json",
+                         type: "PUT",
+                         data : upd_data,
+                         success: function(data){
+                              console.log("sucess");
+                              $('#items_desc_'+itemid).html(upd_data["description"]);
+                              $('#items_due_'+itemid).html(upd_data["due_by"]);
+                              $('#items_compl_'+itemid).html(upd_data["completed"]);
+                         },
+                         error:function(){
+                              console.log("error");
+                         }
+                    });
+               }) 
        });
      </script>
      

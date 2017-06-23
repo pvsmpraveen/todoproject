@@ -16,7 +16,11 @@ class TodolistSerializer(serializers.ModelSerializer):
         model = Todolist
         fields = ('id','user','name','creation_date','items')
 
-
+class SingleTodoSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(many=False)
+    class Meta:
+        model = Todolist
+        fields = ('id','user','name','creation_date')
 
 class PrettyListSerializer(serializers.ModelSerializer):
     #items = serializers.StringRelatedField(many=True)
