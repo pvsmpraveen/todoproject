@@ -25,7 +25,7 @@ SECRET_KEY = 'e)wdd-7%3+#_=@hs@(1q=q4f3dbf*@j29**^so=s18g1vbe^4('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['f1b9466c.ngrok.io','127.0.0.1']
+ALLOWED_HOSTS = ['pvsmtodo.herokuapp.com','f1b9466c.ngrok.io','127.0.0.1']
 
 DISABLE_COLLECTSTATIC=1
 

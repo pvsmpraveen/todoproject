@@ -22,7 +22,7 @@ import todoapp.urls as todo_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^todoapp/',include(todo_urls)),
+    url(r'^$/',include(todo_urls)),
 ]
 
 if settings.DEBUG:
