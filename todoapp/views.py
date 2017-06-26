@@ -47,14 +47,14 @@ def home(request):
 def register_user(request):
     args = {}
     if request.method == 'POST':
-        print request.POST
+        # print request.POST
         form = MyRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/todoapp/login')
         else:
-            print form.error_messages
-            print form.non_field_errors
+            # print form.error_messages
+            # print form.non_field_errors
             args['errors'] =  form.errors
     else:
         form = MyRegistrationForm()
@@ -148,7 +148,7 @@ class todoitems_detail(CSRFExemptMixin,APIView):
         newdata = request.data.copy()
         newdata["todolist"] = snippet.todolist_id
         serializer = TodoitemSerializer(snippet,data=newdata)
-        print serializer
+        # print serializer
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
