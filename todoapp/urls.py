@@ -2,7 +2,7 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from rest_framework_jwt.views import *
 
-from views import *
+from .views import *
 from django.contrib.auth import views
 from .forms import LoginForm
 
