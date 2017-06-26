@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+     <style>
+           body {
+              display: flex;
+              min-height: 100vh;
+              flex-direction: column;
+            }
+
+            main {
+              flex: 1 0 auto;
+            }
+
+          .wrapper{
+              width: 40%;
+              padding : 20px 5px 20px 5px;
+              max-width: 11000px;
+              margin: 20px auto;
+          }
+
+     </style>
+</head>
+
+<body>
+     <header class=>
+     <div class="container-fluid ">
+       <nav>
+         <div class="nav-wrapper centered">
+           <a href="#!" class="brand-logo">Todo Application</a>
+         </div>
+       </nav>
+     </div>
+     </header>
+
+     <main>
+            {% block puthere %}
+
+            {% endblock %}
+     </main>
+
+
+
+      <footer class="page-footer #00695c teal darken-3">
+        <div class="container ">
+          <div class="row">
+            <div class="col l12 s12">
+              <h5 class="white-text">Footer</h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+              Copyright &copy; 2017 pvsmpraveen.
+          </div>
+        </div>
+      </footer>
+     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+
+     <script type=text/javascript>
+       $(document).ready(function(){
+         $('ul.tabs').tabs('select_tab', 'tab_id');
+       });
+     </script>
+
+</body>
+</html>

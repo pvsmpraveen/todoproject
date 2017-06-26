@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block puthere %}
+          <div class="section"></div>
+          <div class="wrapper z-depth-5">
+               <div class="container">
+                    <div id="register" class="col s12">
+                    <form class="col s12" method="post" action="{% url 'registerr' %}">                        
+                    {% csrf_token %}
+                    <div class="section" style="color:red">
+                         {% block content %}
+                             {% if errors %}
+                                   {{errors}}
+                              {% endif %}
+                         {% endblock %}                     
+                    </div>
+                      <div class="form-container">
+                          <div class="row">
+                              <div class="input-field col s12">
+                              <i class="material-icons prefix cyan-text text-darken-4">assignment_ind</i>
+                                  {{ form.username }}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="input-field col s12">
+                         <i class="material-icons prefix cyan-text text-darken-4">email</i>     
+                                  {{ form.email }}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="input-field col s12">
+                          <i class="material-icons prefix cyan-text text-darken-4">lock</i>     
+                                   {{ form.password1 }}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="input-field col s12">
+                         <i class="material-icons prefix cyan-text text-darken-4">lock</i>     
+                                   {{ form.password2 }}
+                              </div>
+                          </div>
+                          <center>
+                              <button class="btn waves-effect waves-light teal" type="submit" name="action">Submit</button>
+                          </center>
+                      </div>
+                  </form>
+               </div>
+          </div>
+          </div>
+ {% endblock %}

@@ -1,0 +1,54 @@
+[
+    {
+        "id": 1,
+        "user": "user1",
+        "name": "list_1",
+        "creation_date": "2017-06-13",
+        "items": [
+            "1,list1_item1,False,2017-06-13",
+            "2,list1_item2,False,2017-06-20",
+            "3,list1_item3,True,2017-06-13",
+            "4,list1_item4,False,2017-06-15",
+            "5,list1_item5,False,2017-06-15"
+        ]
+    },
+    {
+        "id": 2,
+        "user": "user1",
+        "name": "list_2",
+        "creation_date": "2017-06-13",
+        "items": [
+            "6,list2_item1,False,2017-06-13",
+            "7,list2_item2,False,2017-06-20",
+            "8,list2_item3,True,2017-06-13",
+            "9,list2_item4,False,2017-06-15",
+            "10,list2_item5,False,2017-06-15"
+        ]
+    },
+    {
+        "id": 3,
+        "user": "user2",
+        "name": "list_3",
+        "creation_date": "2017-06-13",
+        "items": [
+            "11,list3_item1,False,2017-06-13",
+            "12,list3_item2,False,2017-06-20",
+            "13,list3_item3,True,2017-06-13",
+            "14,list3_item4,False,2017-06-15",
+            "15,list3_item5,False,2017-06-15"
+        ]
+    },
+    {
+        "id": 4,
+        "user": "user2",
+        "name": "list_4",
+        "creation_date": "2017-06-13",
+        "items": [
+            "16,list4_item1,False,2017-06-13",
+            "17,list4_item2,False,2017-06-20",
+            "18,list4_item3,True,2017-06-13",
+            "19,list4_item4,False,2017-06-15",
+            "20,list4_item5,False,2017-06-15"
+        ]
+    }
+]

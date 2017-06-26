@@ -1,58 +1,12 @@
 <!DOCTYPE html>
 <html>
-     {% load staticfiles %} 
+{% load static %}
 <head>
      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+     <link href="/static/css/materialize.min.css" rel="stylesheet">
+     <link href="/static/css/sweetalert.css" rel="stylesheet" >
      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-     <style>
-           body {
-              display: flex;
-              min-height: 100vh;
-              flex-direction: column;
-            }
-
-            main {
-              flex: 1 0 auto;
-            }
-
-          .wrapper{
-              width: 40%;
-              padding : 20px 5px 20px 5px;
-              max-width: 11000px;
-              margin: 20px auto;
-          }
-          
-          .brand-logo{
-              font-weight:900;
-          }
-
-          .dropdown-content {
-            background-color: #FFFFFF;
-            margin: 0;
-            display: none;
-            min-width: 300px; /* Changed this to accomodate content width */
-            max-height: auto;
-              margin-left: -1px; /* Add this to keep dropdown in line with edge of navbar */
-            overflow: hidden; /* Changed this from overflow-y:auto; to overflow:hidden; */
-            opacity: 0;
-            position: absolute;
-            white-space: nowrap;
-            z-index: 1;
-            will-change: width, height;
-          }
-          
-          .btn, .btn-large {
-              text-decoration: none;
-              color: #fff;
-              background-color:wheat;
-              text-align: center;
-              letter-spacing: .5px;
-              transition: .2s ease-out;
-              cursor: pointer;
-          }
-
-     </style>
+     <link href="/static/css/todoapp.css" rel="stylesheet">
 </head>
 
 <body>
@@ -96,13 +50,16 @@
                       </div>  
                     
                     <div id="listcontainer" class="container-fluid">
-                         <ul id="todolists" class="collapsible" data-collapsible="expandable">
+                         <ul id="todolists" class="collapsible popout" data-collapsible="accordion">
                               
                          </ul>
-                         <center>
-                           <button id="createForm" class="btn-floating btn-large waves-effect waves-light green" onclick=createList(this) type="submit"><i class="material-icons">add</i></button>
-                         </center> 
                          
+                      <div class="fixed-action-btn">
+                        <button id="createForm" class="btn-floating btn-large waves-effect waves-light red" onclick=createList(this) type="submit">
+                          <i class="large material-icons">mode_edit</i>
+                        </button>
+                      </div>
+          
                     </div>
                     <div class="section"></div>
                </div>
@@ -168,12 +125,12 @@
         </div>
       </footer>
      
-     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
-     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-     
-     
-          
+     <script type="text/javascript" src="/static/js/jquery-3.2.1.js"></script>
+     <script src="/static/js/materialize.min.js"></script>
+     <script src="/static/js/jquery.tmpl.min.js"></script>
+     <script src="/static/js/sweetalert-dev.js"></script>
+     <script src="/static/js/todoapp.js"> </script>
+
           
      <!--    SCRIPT TEMPLATES AND FUNCTIONS         -->
      
@@ -235,284 +192,6 @@
           </li>
      </script>
      
-     <script type=text/javascript>
-          function createList(ele){
-                $('#modal2').modal('open');
-          }
-          
-          $('#new_list').submit(function(event){
-               event.preventDefault();
-               var formdata = $(this).serializeArray();
-               console.log(formdata);
-               var newlist = new Object();
-                for(var i=0;i<formdata.length;i++){
-                     newlist[formdata[i].name] = formdata[i].value;
-                }
-               $.ajax({
-                    url: "http://127.0.0.1:8000/todoapp/api/lists/", 
-                    headers: {
-                    'X-CSRFToken' : GetCookie('csrftoken')
-                    },
-                    dataType: "json",
-                    type: "POST",
-                    data : newlist,
-                    success: function(data){
-                    
-                         console.log("sucess");
-                         data["items"] = new Array();
-                         console.log(data);
-                         var makedatatmpl = new Array();
-                         makedatatmpl.push(data);
-                         $("#listTemplate").tmpl(makedatatmpl).appendTo('#todolists');
 
-                         
-                    },
-                    error:function(){
-                         console.log("error");
-                    }
-               });
-          });
-          
-          function deleteList(ele){
-               console.log(ele);
-               var listid = ele.id.replace(/^del_list_/, '')
-               $.ajax({
-                    url: "http://127.0.0.1:8000/todoapp/api/lists/"+listid+"/", 
-                    headers: {
-                         'X-CSRFToken' : GetCookie('csrftoken')
-                    },
-                    dataType: "json",
-                    type: "DELETE",
-                    success: function(data){
-                         console.log("sucess");
-                         var domid = "#lis_"+listid;
-                         console.log(domid);
-                         $(domid).remove();
-                         
-                    },
-                    error:function(){
-                         console.log("error");
-                    }
-               });
-               
-          }
-          
-          function updateFun(ele){
-               $('#modal1').modal('open');
-          }
-          
-          function postFun(ele){
-               console.log(ele);
-               var listid = ele.id.replace(/^butt_/, '')
-               var desc = $('#new_item_'+listid).val();
-               var dueby = $('#new_date_'+listid).val();
-               var compl = $('#new_compl_'+listid).prop('checked')
-               console.log(listid);
-               console.log(desc);
-               console.log(dueby);
-               console.log(compl);
-               var post_data = new Object();
-               post_data["description"] = desc;
-               post_data["due_by"] = dueby;
-               post_data["completed"] = compl;
-               
-               $.ajax({
-                    url: "http://127.0.0.1:8000/todoapp/api/lists/"+listid+"/items/", 
-                    headers: {
-                         'X-CSRFToken' : GetCookie('csrftoken')
-                    },
-                    dataType: "json",
-                    type: "POST",
-                    data : post_data,
-                    success: function(data){
-                         console.log("sucess");
-                         console.log(data);
-                         var rowBegin = ' <tr id=items_'+data["id"]+' class=\"item\">';
-                         var row1 =  ' <td id=items_desc_'+data["id"]+'>'+data["description"] +'</td>';
-                         var row2 =  ' <td id=items_due_'+data["id"]+'>'+ data["due_by"] +'</td>';
-                         var row3 =  ' <td id=items_desc_'+data["id"]+'>'+data["completed"] + '</td>';
-                         console.log(rowBegin);
-                         console.log(row1);
-                         console.log(row2);
-                         console.log(row3);
-                         var row4 = ' <td><a id=\"upd_item_'+data['id']+'\"' + ' class="modal-trigger waves-effect waves-teal" href="#modal1"> <i class="material-icons">input</i> </a> </td>';
-                         var row5 = ' <td><a id=item_'+data["id"]+' class="del_item" href="javascript:;"> <i class="material-icons">delete</i> </a> </td>';
-                         var rowEnd = ' </tr>';
-                         var html = rowBegin+row1+row2+row3+row4+row5+rowEnd;
-                         console.log(html);
-                         var domid = "#table_"+listid;
-                         $(domid).prepend(html);
-                    },
-                    error:function(){
-                         console.log("error");
-                    }
-               });
-          }
-          
-     function GetCookie(sName){
-            var aCookie = document.cookie.split("; ");
-            for (var i=0; i < aCookie.length; i++){
-              var aCrumb = aCookie[i].split("=");
-              if (sName == aCrumb[0]) 
-                return unescape(aCrumb[1]);
-            }
-            return null;
-
-       }
-     
-     $(document).ready(function(){
-          $("#welcomeuser").text("Welcome "+GetCookie("username")+" !");
-          
-          $('.dropdown-button').dropdown({
-                inDuration: 300,
-                outDuration: 225,
-                hover: true, // Activate on hover
-                belowOrigin: true, // Displays dropdown below the button
-                alignment: 'right' // Displays dropdown with edge aligned to the left of button
-              }
-            );
-             $('.modal').modal();
-            
-              var date = new Date();
-
-              var day = date.getDate();
-              var month = date.getMonth() + 1;
-              var year = date.getFullYear();
-
-              if (month < 10) month = "0" + month;
-              if (day < 10) day = "0" + day;
-
-              var today = year + "-" + month + "-" + day;       
-              $("#theDate").attr("value", today); 
-            
-           $.ajax({
-               url: "http://127.0.0.1:8000/todoapp/api/lists/", 
-               headers: {
-                    'Content-Type': 'application/json',
-               },
-               dataType: "json",
-               type: "GET",
-               contentType: "application/json; charset=utf-8",
-               success: function(data){
-
-                    $("#response").html(data);
-                    $('#loader').hide(); 
-                    console.log(data);
-                    $("#listTemplate").tmpl(data).appendTo('#todolists');
-               },
-               error:function(){
-                    console.log("error");
-               }
-          });
-            
-          $('body').on('click','.del_item',function(){
-             var id = this.id.replace(/^item_/, '');
-             var hide = "#items_"+id;
-             $.ajax({
-                    url: "http://127.0.0.1:8000/todoapp/api/items/"+id+"/", 
-                    headers: {
-                         'Content-Type': 'application/json',
-                         'X-CSRFToken' : GetCookie('csrftoken')
-                    },
-                    dataType: "json",
-                    type: "DELETE",
-                    contentType: "application/json; charset=utf-8",
-                    success: function(data){
-                         $(hide).remove(); 
-                    },
-                    error:function(){
-                         console.log("error");
-                    }
-               });
-          });
-          
-          var itemid;
-          var listid;
-          
-          $('#modal3').modal({dismissible: true, opacity: .5, inDuration: 300, outDuration: 200, startingTop: '4%', endingTop: '10%', 
-               ready: function(modal, trigger) { listid = trigger["0"].id.replace(/^upd_list_/, ''); },
-               complete: function(){ }
-          });
-          
-          $('#modal1').modal({
-               dismissible: true, opacity: .5, inDuration: 300, outDuration: 200, startingTop: '4%',endingTop: '10%',
-               ready: function(modal, trigger) { itemid = trigger["0"].id.replace(/^upd_item_/, '');  },
-               complete: function(){  }
-          });
-          
-          $('#update_list').submit(function(event){
-               event.preventDefault();
-               var formdata = $(this).serializeArray();
-               console.log(formdata);
-               var newlist = new Object();
-               for(var i=0;i<formdata.length;i++){
-                     newlist[formdata[i].name] = formdata[i].value;
-               }
-               console.log(newlist);
-                     console.log(listid);
-                     $.ajax({
-                         url: "http://127.0.0.1:8000/todoapp/api/lists/"+listid+"/", 
-                         headers: {
-                              'X-CSRFToken' : GetCookie('csrftoken')
-                              
-                         },
-                         dataType: "json",
-                         type: "PUT",
-                         data : newlist,
-                         success: function(data){
-                              console.log("sucess");
-                              $('#lists_name_'+listid).html(newlist["name"]);
-                              $('#lists_date_'+listid).html(newlist["creation_date"]);
-                              
-                         },
-                         error:function(){
-                              console.log("error");
-                         }
-               });
-          });
-          
-          $('#updform').submit(function(event){
-                    event.preventDefault();
-                    console.log(itemid);
-                    var formdata = $(this).serializeArray();
-                    var upd_data = new Object();
-                    console.log(formdata);
-                    for(var i =0;i<formdata.length;i++){
-                         if(formdata[i].name == "item_status"){
-                              if(formdata[i].value == "on"){
-                                   upd_data["completed"] = "true";
-                              }
-                              else{
-                                   upd_data["completed"] = "false";
-                              }
-                         }
-                         else{
-                              upd_data[formdata[i].name] = formdata[i].value;
-                         }
-                         
-                    }
-                    console.log(upd_data);
-                    $.ajax({
-                         url: "http://127.0.0.1:8000/todoapp/api/items/"+itemid+"/", 
-                         headers: {
-                              'X-CSRFToken' : GetCookie('csrftoken')
-                         },
-                         dataType: "json",
-                         type: "PUT",
-                         data : upd_data,
-                         success: function(data){
-                              console.log("sucess");
-                              $('#items_desc_'+itemid).html(upd_data["description"]);
-                              $('#items_due_'+itemid).html(upd_data["due_by"]);
-                              $('#items_compl_'+itemid).html(upd_data["completed"]);
-                         },
-                         error:function(){
-                              console.log("error");
-                         }
-                    });
-               }) 
-       });
-     </script>
-     
 </body>
 </html>

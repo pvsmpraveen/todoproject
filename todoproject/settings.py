@@ -25,7 +25,7 @@ SECRET_KEY = 'e)wdd-7%3+#_=@hs@(1q=q4f3dbf*@j29**^so=s18g1vbe^4('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['4298e0b6.ngrok.io','3dcc8d44.ngrok.io','16656b4e.ngrok.io','127.0.0.1','c852453d.ngrok.io','8533846f.ngrok.io']
 
 
 # Application definition
@@ -61,7 +61,7 @@ TEMPLATES = [
         'DIRS':
         [
             "templates",
-            'todoapp/templates',
+
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -131,6 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [('C:\\work\\dump\\Experimental\\todoproject\\static')]
 
 ################### LOGGING ######################
 LOGGING = {

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block puthere %}
+          <div class="section"></div>
+          <div class="wrapper z-depth-5">
+               <div class="container">
+                    <form class="col s12" method="post" action="{% url 'loginn' %}">
+                        {% csrf_token %}
+                           <div class="form-container">
+                               <div class="row">
+                                   <div class="input-field col s12">
+                                       <i class="material-icons prefix cyan-text text-darken-4">assignment_ind</i>
+                                       {{ form.username }}
+                                   </div>
+                               </div>
+                               <div class="row">
+                                   <div class="input-field col s12">
+                                   <i class="material-icons prefix cyan-text text-darken-4">lock</i>
+                                       {{ form.password }}
+                                   </div>
+                               </div>
+                               <br>
+                               <center>
+                                   <button class="btn waves-effect waves-light teal" type="submit" name="action">Login</button>
+                                   <button class="btn waves-effect waves-light teal" type="button" onclick="location.href='{% url 'registerr' %}'"> Register</button>
+                               </center>
+                           </div>
+                    </form>
+               </div>
+          </div>
+ {% endblock %}
