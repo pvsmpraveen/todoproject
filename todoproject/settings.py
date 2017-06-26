@@ -89,13 +89,12 @@ WSGI_APPLICATION = 'todoproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "tododb",
-        "USER":  'root',
-        'PASSWORD': 'praveen',
-        'OPTIONS': {
-            'autocommit': True,
-        },
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dfqkd9b2peup9q',
+        'USER': 'gscpmdksugnyjh',
+        'PASSWORD': 'f67ed6730223102565d396e8dcde92b6cd2e87dce2f77b121bbae2b4f3fedd8e',
+        'HOST': 'ec2-184-73-249-56.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
