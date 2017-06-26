@@ -1,13 +1,7 @@
-asn1crypto==0.22.0
-BeautifulSoup==3.2.1
-beautifulsoup4==4.6.0
-bs4==0.0.1
 certifi==2017.4.17
-cffi==1.10.0
 chardet==3.0.4
 click==6.7
 config==0.3.9
-cryptography==1.9
 cycler==0.10.0
 decorator==4.0.11
 Django==1.11.2
@@ -18,10 +12,8 @@ django-debug-toolbar==1.8
 django-debug-toolbar-template-profiler==1.0.1
 djangorestframework==3.6.3
 djangorestframework-jwt==1.10.0
-enum34==1.1.6
 et-xmlfile==1.0.1
 functools32==3.2.3.post2
-GRR-M2Crypto==0.22.6.post2
 idna==2.5
 ipaddress==1.0.18
 ipython-genutils==0.2.0
