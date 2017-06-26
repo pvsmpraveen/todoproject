@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="03398db4-2166-4d0f-920b-2819adae02b2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home.html" afterPath="$PROJECT_DIR$/templates/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/todoproject/settings.py" afterPath="$PROJECT_DIR$/todoproject/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/todoproject/urls.py" afterPath="$PROJECT_DIR$/todoproject/urls.py" />
     </list>
     <list id="ea62082b-bc6a-4c79-97c9-5b701639cdf3" name="added logging" comment="added logging" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -107,10 +104,10 @@
       <file leaf-file-name="home.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-666">
-              <caret line="134" column="55" lean-forward="true" selection-start-line="134" selection-start-column="55" selection-end-line="134" selection-end-column="55" />
+            <state relative-caret-position="-751">
+              <caret line="129" column="23" lean-forward="false" selection-start-line="129" selection-start-column="23" selection-end-line="129" selection-end-column="23" />
               <folding>
-                <element signature="e#6022#6028#0" expanded="true" />
+                <element signature="e#6023#6029#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1014,10 +1011,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-666">
-          <caret line="134" column="55" lean-forward="true" selection-start-line="134" selection-start-column="55" selection-end-line="134" selection-end-column="55" />
+        <state relative-caret-position="-751">
+          <caret line="129" column="23" lean-forward="false" selection-start-line="129" selection-start-column="23" selection-end-line="129" selection-end-column="23" />
           <folding>
-            <element signature="e#6022#6028#0" expanded="true" />
+            <element signature="e#6023#6029#0" expanded="true" />
           </folding>
         </state>
       </provider>
