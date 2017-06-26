@@ -34,7 +34,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.template.context_processors import csrf
-from forms import MyRegistrationForm
+from .forms import MyRegistrationForm
 
 
 @login_required(login_url="login/")
